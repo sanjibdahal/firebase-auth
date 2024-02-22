@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "610092974568",
+    "project_id": "daily-algo",
+    "storage_bucket": "daily-algo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610092974568:android:4a2caf9105f49fb061e45d",
+        "android_client_info": {
+          "package_name": "com.example.daily_algo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "610092974568-6rr8c8hjkfslntgnt32m5fvvt451m1vp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAodcmW7oOFhOljzDm8MjpA6X8j6OXklSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "610092974568-6rr8c8hjkfslntgnt32m5fvvt451m1vp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "610092974568-3hoq9e55letlkt6qqspod1jop95dr19j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dailyAlgo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
