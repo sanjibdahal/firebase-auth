@@ -67,6 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '610092974568',
     projectId: 'daily-algo',
     storageBucket: 'daily-algo.appspot.com',
+    androidClientId: '610092974568-fsoikc0i7kdrsdgg8vu0aqj82pbcfe34.apps.googleusercontent.com',
+    iosClientId: '610092974568-3hoq9e55letlkt6qqspod1jop95dr19j.apps.googleusercontent.com',
     iosBundleId: 'com.example.dailyAlgo',
   );
 
@@ -76,6 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '610092974568',
     projectId: 'daily-algo',
     storageBucket: 'daily-algo.appspot.com',
+    androidClientId: '610092974568-fsoikc0i7kdrsdgg8vu0aqj82pbcfe34.apps.googleusercontent.com',
+    iosClientId: '610092974568-jmgjnslpok6n6ot2djpeiqn1jv5193j6.apps.googleusercontent.com',
     iosBundleId: 'com.example.dailyAlgo.RunnerTests',
   );
 }
