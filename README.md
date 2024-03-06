@@ -1,2 +1,3 @@
 # DailyDoseofAlgo
-A Day without Algorithm is day wasted
+DailyDoseofAlgo is a web portal that will gamify the concept of learning algorithm and datastructure
+
