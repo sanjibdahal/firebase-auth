@@ -1,3 +1,5 @@
+import 'package:daily_algo/src/common_widgets/elevated_button.dart';
+import 'package:daily_algo/src/common_widgets/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -95,63 +97,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
-                    TextFormField(
+                    STextField(
                       controller: nameController,
-                      decoration: InputDecoration(
-                        labelText: "Name",
-                        hintText: "Enter your name",
-                        prefixIcon: const Icon(Icons.person_rounded),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
+                      hintText: "Enter your name",
+                      labelText: "Name",
+                      prefixIcon: const Icon(Icons.person_rounded),
                     ),
                     const SizedBox(height: 20),
-                    TextFormField(
+                    STextField(
                       controller: emailController,
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        hintText: "Enter your email",
-                        prefixIcon: const Icon(Icons.alternate_email_rounded),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
+                      hintText: "Enter your email",
+                      labelText: "Email",
+                      prefixIcon: const Icon(Icons.alternate_email_rounded),
                     ),
                     const SizedBox(height: 20),
-                    TextFormField(
+                    STextField(
                       controller: phoneController,
-                      decoration: InputDecoration(
-                        labelText: "Phone number",
-                        hintText: "Enter your phone number",
-                        prefixIcon: const Icon(Icons.phone),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
+                      hintText: "Enter your phone number",
+                      labelText: "Phone number",
+                      prefixIcon: const Icon(Icons.phone),
                     ),
                     const SizedBox(height: 20),
-                    TextFormField(
-                      obscureText: !isPasswordVisible,
+                    STextField(
                       controller: passwordController,
-                      decoration: InputDecoration(
-                        labelText: "Password",
-                        hintText: "Enter your password",
-                        prefixIcon: const Icon(Icons.fingerprint_rounded),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isPasswordVisible = !isPasswordVisible;
-                            });
-                          },
-                          icon: Icon(
-                            isPasswordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                          ),
+                      hintText: "Enter your password",
+                      labelText: "Password",
+                      prefixIcon: const Icon(Icons.fingerprint_rounded),
+                      obsureText: true,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                        icon: Icon(
+                          isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                         ),
                       ),
                     ),
@@ -180,30 +162,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ],
                     ),
                     const SizedBox(height: 15),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 55),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Text(
-                        "Create Account",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
+                    SElevatedButton(onPressed: () {}, text: "Create Account"),
                     const SizedBox(height: 15),
                     Row(
                       children: [
-                        const Expanded(
-                          child: Divider(
-                            color: Colors.grey,
-                          ),
-                        ),
+                        const Expanded(child: Divider(color: Colors.grey)),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -214,11 +177,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                         ),
-                        const Expanded(
-                          child: Divider(
-                            color: Colors.grey,
-                          ),
-                        ),
+                        const Expanded(child: Divider(color: Colors.grey)),
                       ],
                     ),
                     const SizedBox(height: 10),

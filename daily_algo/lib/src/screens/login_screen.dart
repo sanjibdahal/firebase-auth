@@ -3,6 +3,8 @@ import 'package:daily_algo/src/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../common_widgets/elevated_button.dart';
+import '../common_widgets/outlined_button.dart';
 import '../common_widgets/text_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -105,29 +107,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       hintText: "Enter your password",
                       prefixIcon: const Icon(Icons.fingerprint_rounded),
                       obsureText: !isPasswordVisible,
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      obscureText: !isPasswordVisible,
-                      controller: passwordController,
-                      decoration: InputDecoration(
-                        labelText: "Password",
-                        hintText: "Enter your password",
-                        prefixIcon: const Icon(Icons.fingerprint_rounded),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isPasswordVisible = !isPasswordVisible;
-                            });
-                          },
-                          icon: Icon(
-                            isPasswordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                          ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                        icon: Icon(
+                          isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                         ),
                       ),
                     ),
@@ -142,53 +131,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     const SizedBox(height: 5),
-                    ElevatedButton(
+                    SElevatedButton(
                       onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 55),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                      ),
+                      text: 'Login',
                     ),
                     const SizedBox(height: 15),
-                    OutlinedButton(
+                    SOutlinedButton(
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const SignUpScreen(),
                         ));
                       },
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 55),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Text(
-                        "Create Account",
-                        style: TextStyle(
-                          // color: Colors.grey[800],
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
-                        ),
-                      ),
+                      text: 'Create Account',
                     ),
                     const SizedBox(height: 15),
                     const Row(
                       children: [
-                        Expanded(
-                          child: Divider(
-                            color: greyColor,
-                          ),
-                        ),
+                        Expanded(child: Divider(color: greyColor)),
                         Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
@@ -199,11 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: Divider(
-                            color: greyColor,
-                          ),
-                        ),
+                        Expanded(child: Divider(color: greyColor)),
                       ],
                     ),
                     const SizedBox(height: 10),

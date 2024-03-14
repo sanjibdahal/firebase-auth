@@ -8,6 +8,7 @@ class STextField extends StatelessWidget {
     this.hintText,
     this.prefixIcon,
     this.obsureText = false,
+    this.suffixIcon,
   });
 
   final TextEditingController controller;
@@ -15,18 +16,24 @@ class STextField extends StatelessWidget {
   final String? hintText;
   final Icon? prefixIcon;
   final bool obsureText;
+  final IconButton? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obsureText,
-      decoration: InputDecoration(
-        labelText: labelText,
-        hintText: hintText,
-        prefixIcon: prefixIcon,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+    return SizedBox(
+      width: double.infinity,
+      height: 50.0,
+      child: TextFormField(
+        controller: controller,
+        obscureText: obsureText,
+        decoration: InputDecoration(
+          labelText: labelText,
+          hintText: hintText,
+          prefixIcon: prefixIcon,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          suffixIcon: suffixIcon,
         ),
       ),
     );
