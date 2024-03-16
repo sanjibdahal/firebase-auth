@@ -1,6 +1,8 @@
 import 'package:daily_algo/firebase_options.dart';
+import 'package:daily_algo/src/screens/home_screen.dart';
 import 'package:daily_algo/src/screens/login_screen.dart';
 import 'package:daily_algo/src/utils/theme/theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +23,20 @@ class MainApp extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
       title: "Daily Algo",
-      home: const LoginScreen(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, AsyncSnapshot<User?> snapshot) {
+          if(snapshot.hasData && snapshot.data != null) {
+          return const HomeScreen();
+          }
+          else if(snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          else {
+            return const LoginScreen();
+          }
+        }
+      ),
     );
   }
 }

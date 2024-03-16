@@ -1,5 +1,6 @@
 import 'package:daily_algo/src/common_widgets/elevated_button.dart';
 import 'package:daily_algo/src/common_widgets/text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -19,6 +20,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   bool isLargeScreen(BuildContext context) {
     return MediaQuery.of(context).size.width > 900;
+  }
+
+  Future<void> signUp() async {
+    final auth = FirebaseAuth.instance;
+    auth
+        .createUserWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    )
+        .then((value) {
+      print("User registered.");
+    }).catchError((error) {
+      print("Failed to login: $error");
+    });
   }
 
   @override
@@ -162,7 +177,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ],
                     ),
                     const SizedBox(height: 15),
-                    SElevatedButton(onPressed: () {}, text: "Create Account"),
+                    SElevatedButton(
+                        onPressed: () {
+                          signUp();
+                        },
+                        child: Text("Create Account")),
                     const SizedBox(height: 15),
                     Row(
                       children: [

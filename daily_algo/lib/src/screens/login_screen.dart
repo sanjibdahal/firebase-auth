@@ -1,5 +1,6 @@
 import 'package:daily_algo/src/constants/colors.dart';
 import 'package:daily_algo/src/screens/signup_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -21,6 +22,40 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool isLargeScreen(BuildContext context) {
     return MediaQuery.of(context).size.width > 900;
+  }
+
+  bool isLoading = false;
+
+  Future<void> login() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      showErrorMsg(e.message!);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void showErrorMsg(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          // backgroundColor: Colors.lightBlue,
+          title: Text(
+            message,
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -132,8 +167,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 5),
                     SElevatedButton(
-                      onPressed: () {},
-                      text: 'Login',
+                      onPressed: () {
+                        login();
+                      },
+                      child: isLoading
+                          ? const CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation(Colors.white),
+                            )
+                          : const Text("Log In"),
                     ),
                     const SizedBox(height: 15),
                     SOutlinedButton(
@@ -142,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           builder: (context) => const SignUpScreen(),
                         ));
                       },
-                      text: 'Create Account',
+                      child: const Text('Create Account'),
                     ),
                     const SizedBox(height: 15),
                     const Row(
