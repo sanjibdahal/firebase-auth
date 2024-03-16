@@ -1,8 +1,11 @@
 import 'package:daily_algo/src/common_widgets/elevated_button.dart';
 import 'package:daily_algo/src/common_widgets/text_field.dart';
+import 'package:daily_algo/src/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../constants/image_strings.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -22,20 +25,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return MediaQuery.of(context).size.width > 900;
   }
 
-  Future<void> signUp() async {
-    final auth = FirebaseAuth.instance;
-    auth
-        .createUserWithEmailAndPassword(
-      email: emailController.text,
-      password: passwordController.text,
-    )
-        .then((value) {
-      print("User registered.");
-    }).catchError((error) {
-      print("Failed to login: $error");
-    });
+  Future<void> createUserWithEmailAndPassword() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      await AuthService().createUserWithEmailAndPassword(
+          emailController.text, passwordController.text);
+    } on FirebaseAuthException catch (e) {
+      showErrorMsg(e.message!);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
+  void showErrorMsg(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          // backgroundColor: Colors.lightBlue,
+          title: Text(
+            message,
+          ),
+        );
+      },
+    );
+  }
+
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -77,16 +97,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal:
-                      isLargeScreen(context) ? (screenWidth * 0.07) : 16,
-                  vertical: 16),
-              constraints: BoxConstraints(
-                maxWidth: screenWidth * (isLargeScreen(context) ? 0.5 : 1),
-                minHeight: screenHeight,
-              ),
-              child: SingleChildScrollView(
+            SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal:
+                        isLargeScreen(context) ? (screenWidth * 0.07) : 16),
+                constraints: BoxConstraints(
+                  maxWidth: screenWidth * (isLargeScreen(context) ? 0.5 : 1),
+                  minHeight: screenHeight,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,12 +115,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      icon: const Icon(
-                        Icons.arrow_back_ios_rounded,
-                        // size: 24,
-                      ),
+                      icon: const Icon(Icons.arrow_back_ios_rounded),
                     ),
                     const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(logo),
+                      ],
+                    ),
+                    const SizedBox(height: 25),
                     const Padding(
                       padding: EdgeInsets.only(bottom: 16.0),
                       child: Text(
@@ -178,10 +201,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 15),
                     SElevatedButton(
-                        onPressed: () {
-                          signUp();
-                        },
-                        child: Text("Create Account")),
+                      onPressed: () {
+                        createUserWithEmailAndPassword();
+                      },
+                      child: isLoading
+                          ? const CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation(Colors.white),
+                            )
+                          : const Text("Create Account"),
+                    ),
                     const SizedBox(height: 15),
                     Row(
                       children: [
@@ -204,7 +232,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       children: [
                         Expanded(
                           child: ElevatedButton.icon(
-                            onPressed: () {},
+                            onPressed: () {
+                              AuthService()
+                                  .signInWithGoogle()
+                                  .whenComplete(() => Navigator.pop(context));
+                            },
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(double.infinity, 50),
                               backgroundColor: Colors.red,
@@ -219,10 +251,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size(double.infinity, 50),
-                              backgroundColor: Colors.blue,
+                              backgroundColor: Colors.black54,
                             ),
-                            icon: const Icon(Icons.facebook),
-                            label: const Text("Facebook"),
+                            icon: const FaIcon(FontAwesomeIcons.github),
+                            label: const Text("Github"),
                           ),
                         ),
                       ],

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class SElevatedButton extends StatelessWidget {
   const SElevatedButton({
-    super.key, 
-    required this.onPressed, 
-    required this.child, 
+    super.key,
+    required this.onPressed,
+    required this.child,
     this.color = Colors.white,
   });
 
@@ -17,7 +17,8 @@ class SElevatedButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        minimumSize: const Size(double.infinity, 50),textStyle: TextStyle(
+        minimumSize: const Size(double.infinity, 50),
+        textStyle: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 18,
           color: color,

@@ -24,19 +24,16 @@ class MainApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       title: "Daily Algo",
       home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, AsyncSnapshot<User?> snapshot) {
-          if(snapshot.hasData && snapshot.data != null) {
-          return const HomeScreen();
-          }
-          else if(snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          else {
-            return const LoginScreen();
-          }
-        }
-      ),
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, AsyncSnapshot<User?> snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
+              return const HomeScreen();
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return const LoginScreen();
+            }
+          }),
     );
   }
 }
