@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SOutlinedButton extends StatelessWidget {
   const SOutlinedButton({
@@ -18,9 +19,10 @@ class SOutlinedButton extends StatelessWidget {
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
         minimumSize: const Size(double.infinity, 50),
-        textStyle: const TextStyle(
+        textStyle: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 18,
+          fontFamily: GoogleFonts.poppins().fontFamily,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),

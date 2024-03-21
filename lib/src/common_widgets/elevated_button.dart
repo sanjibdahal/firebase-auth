@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SElevatedButton extends StatelessWidget {
   const SElevatedButton({
@@ -22,6 +23,7 @@ class SElevatedButton extends StatelessWidget {
           fontWeight: FontWeight.w500,
           fontSize: 18,
           color: color,
+          fontFamily: GoogleFonts.poppins().fontFamily,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),

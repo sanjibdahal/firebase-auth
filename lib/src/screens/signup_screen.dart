@@ -1,11 +1,13 @@
+import 'dart:io';
+
 import 'package:daily_algo/src/common_widgets/elevated_button.dart';
 import 'package:daily_algo/src/common_widgets/text_field.dart';
 import 'package:daily_algo/src/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import '../constants/image_strings.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -15,6 +17,94 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  Uint8List? image;
+  File? selectedImage;
+
+  Future<void> getLostData() async {
+    final ImagePicker picker = ImagePicker();
+    final LostDataResponse response = await picker.retrieveLostData();
+    if (response.isEmpty) {
+      print("Mein kaha hun");
+      return;
+    }
+    final XFile? file = response.file;
+    if (file != null) {
+      print("Yay i found it");
+      setState(() {
+        selectedImage = File(file.path);
+      });
+      print(file.path);
+    } else {
+      print("nooooooo ${response.exception}");
+    }
+  }
+  //app restarts after picking image in 2gb ram mobile device
+  // write code to solve this issue
+
+  Future getImage() async {
+    final ImagePicker picker = ImagePicker();
+    final LostDataResponse response = await picker.retrieveLostData();
+    if (response.isEmpty) {
+      print("Mein kaha hun");
+
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile == null) {
+        print("Some issue while choosing file");
+        return;
+      }
+      setState(() {
+        selectedImage = File(pickedFile.path);
+        image = selectedImage!.readAsBytesSync();
+        print("Path to the heaven: ${selectedImage!.path}");
+      });
+      return;
+    }
+    final XFile? file = response.file;
+    if (file != null) {
+      print("Yay i found it");
+      print(file.path);
+    } else {
+      print("nooooooo ${response.exception}");
+    }
+  }
+
+  // Future<void> uploadImage() async {
+  //   try {
+  //     User? user = FirebaseAuth.instance.currentUser;
+
+  //     if (image != null) {
+  //       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+  //       firebase_storage.Reference ref = firebase_storage
+  //           .FirebaseStorage.instance
+  //           .ref()
+  //           .child('users')
+  //           .child(user!.uid)
+  //           .child('$fileName.jpg');
+
+  //       // await ref.putFile(image!);
+
+  //       String downloadURL = await ref.getDownloadURL();
+
+  //       // Now you can save this downloadURL in Firestore along with other user data.
+  //       // For example:
+  //       FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+  //         'photoUrl': downloadURL,
+  //       });
+
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('Image uploaded successfully')),
+  //       );
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('No image selected')),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     print('Error uploading image: $e');
+  //   }
+  // }
+
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
@@ -118,13 +208,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       icon: const Icon(Icons.arrow_back_ios_rounded),
                     ),
                     const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(logo),
-                      ],
-                    ),
-                    const SizedBox(height: 25),
                     const Padding(
                       padding: EdgeInsets.only(bottom: 16.0),
                       child: Text(
@@ -135,6 +218,66 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Stack(
+                          children: [
+                            // ClipOval(
+                            //   child: image == null
+                            //       ? Image.network(
+                            //           defaultPicture,
+                            //           colorBlendMode: BlendMode.darken,
+                            //           fit: BoxFit.cover,
+                            //           width: 100,
+                            //           height: 100,
+                            //         )
+                            //       : Image.file(
+                            //           selectedImage!,
+                            //           fit: BoxFit.cover,
+                            //           width: 100,
+                            //           height: 100,
+                            //         ),
+                            // ),
+                            ClipOval(
+                              child: image == null
+                                  ? Image.asset(
+                                      "assets/images/default-picture.png",
+                                      fit: BoxFit.cover,
+                                      width: 100,
+                                      height: 100,
+                                    )
+                                  : Image.file(
+                                      selectedImage!,
+                                      fit: BoxFit.cover,
+                                      width: 100,
+                                      height: 100,
+                                    ),
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: const BoxDecoration(
+                                  color: Colors.black87,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: IconButton(
+                                  onPressed: () {
+                                    getImage();
+                                  },
+                                  icon: const Icon(Icons.camera_alt_rounded),
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
                     STextField(
                       controller: nameController,
                       hintText: "Enter your name",
@@ -258,7 +401,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
