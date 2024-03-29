@@ -20,33 +20,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Uint8List? image;
   File? selectedImage;
 
-  Future<void> getLostData() async {
-    final ImagePicker picker = ImagePicker();
-    final LostDataResponse response = await picker.retrieveLostData();
-    if (response.isEmpty) {
-      print("Mein kaha hun");
-      return;
-    }
-    final XFile? file = response.file;
-    if (file != null) {
-      print("Yay i found it");
-      setState(() {
-        selectedImage = File(file.path);
-      });
-      print(file.path);
-    } else {
-      print("nooooooo ${response.exception}");
-    }
-  }
-  //app restarts after picking image in 2gb ram mobile device
-  // write code to solve this issue
-
   Future getImage() async {
-    final ImagePicker picker = ImagePicker();
-    final LostDataResponse response = await picker.retrieveLostData();
-    if (response.isEmpty) {
-      print("Mein kaha hun");
-
+    try {
       final pickedFile =
           await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedFile == null) {
@@ -54,18 +29,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         return;
       }
       setState(() {
+        print("Path to the photo: ${selectedImage!.path}");
         selectedImage = File(pickedFile.path);
         image = selectedImage!.readAsBytesSync();
-        print("Path to the heaven: ${selectedImage!.path}");
       });
-      return;
-    }
-    final XFile? file = response.file;
-    if (file != null) {
-      print("Yay i found it");
-      print(file.path);
-    } else {
-      print("nooooooo ${response.exception}");
+    } catch (e) {
+      print("Errorrrrrrrr: $e");
     }
   }
 
@@ -120,8 +89,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       setState(() {
         isLoading = true;
       });
+
       await AuthService().createUserWithEmailAndPassword(
-          emailController.text, passwordController.text);
+        emailController.text,
+        passwordController.text,
+        nameController.text,
+        phoneController.text,
+      );
     } on FirebaseAuthException catch (e) {
       showErrorMsg(e.message!);
     } finally {
@@ -223,24 +197,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       children: [
                         Stack(
                           children: [
-                            // ClipOval(
-                            //   child: image == null
-                            //       ? Image.network(
-                            //           defaultPicture,
-                            //           colorBlendMode: BlendMode.darken,
-                            //           fit: BoxFit.cover,
-                            //           width: 100,
-                            //           height: 100,
-                            //         )
-                            //       : Image.file(
-                            //           selectedImage!,
-                            //           fit: BoxFit.cover,
-                            //           width: 100,
-                            //           height: 100,
-                            //         ),
-                            // ),
                             ClipOval(
-                              child: image == null
+                              child: selectedImage == null
                                   ? Image.asset(
                                       "assets/images/default-picture.png",
                                       fit: BoxFit.cover,

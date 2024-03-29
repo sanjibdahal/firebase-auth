@@ -33,7 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         isLoading = true;
       });
-      await AuthService().signInWithEmailAndPassword(emailController.text, passwordController.text);
+      await AuthService().signInWithEmailAndPassword(
+          emailController.text, passwordController.text);
     } on FirebaseAuthException catch (e) {
       showErrorMsg(e.message!);
     } finally {

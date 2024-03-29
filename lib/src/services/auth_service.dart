@@ -1,6 +1,9 @@
+import 'package:daily_algo/src/services/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import '../models/user_model.dart';
 
 class AuthService {
   Future<void> signInWithEmailAndPassword(email, password) async {
@@ -10,11 +13,21 @@ class AuthService {
     );
   }
 
-  Future<void> createUserWithEmailAndPassword(email, password) async {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  Future<void> createUserWithEmailAndPassword(
+      email, password, displayName, phoneNumber) async {
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
       email: email,
       password: password,
-    );
+    ).whenComplete(() {
+      final user = UserModel(
+        id: FirebaseAuth.instance.currentUser!.uid,
+        displayName: displayName,
+        email: email,
+        phoneNumber: phoneNumber,
+      );
+      UserRepository().createUser(user);
+    });
   }
 
   Future<void> logout() async {
@@ -25,6 +38,33 @@ class AuthService {
       throw "Unable to log out";
     }
   }
+
+  // Future signInWithGithub() async {
+  //   if (kIsWeb) {
+  //     // Create a new provider
+  //     GithubAuthProvider githubProvider = GithubAuthProvider();
+
+  //     // Once signed in, return the UserCredential
+  //     return await FirebaseAuth.instance.signInWithPopup(githubProvider);
+  //   } else {
+  //     // Trigger the sign-in flow
+  //     final GithubSignIn gitHubSignIn = GithubSignIn(
+  //       clientId: 'YOUR_GITHUB_CLIENT_ID',
+  //       clientSecret: 'YOUR_GITHUB_CLIENT_SECRET',
+  //       redirectUrl: 'YOUR_GITHUB_REDIRECT_URL',
+  //     );
+
+  //     final result = await gitHubSignIn.signIn(context);
+
+  //     // Create a credential from the access token
+  //     final AuthCredential githubAuthCredential =
+  //         GithubAuthProvider.credential(result.token);
+
+  //     // Once signed in, return the UserCredential
+  //     return await FirebaseAuth.instance
+  //         .signInWithCredential(githubAuthCredential);
+  //   }
+  // }
 
   Future<UserCredential> signInWithGoogle() async {
     if (kIsWeb) {

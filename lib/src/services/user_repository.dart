@@ -16,5 +16,15 @@ class UserRepository {
       log("Error creating user: $error");
       return error;
     });
+    // try {
+    //   await _db
+    //       .collection("users")
+    //       .doc(user.id)
+    //       .set(user.toJSON())
+    //       .whenComplete(() => log("User created"));
+    // } catch (e) {
+    //   log("Error creating user: $e");
+    //   return e;
+    // }
   }
 }

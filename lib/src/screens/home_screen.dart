@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_algo/src/common_widgets/elevated_button.dart';
 import 'package:daily_algo/src/common_widgets/text_field.dart';
 import 'package:daily_algo/src/services/auth_service.dart';
@@ -12,6 +13,23 @@ class HomeScreen extends StatelessWidget {
     User? user = FirebaseAuth.instance.currentUser;
 
     final namecontroller = TextEditingController();
+
+    // final doc = FirebaseFirestore.instance.collection("users").doc(user?.uid).get();
+    // User _currentUser = User. (doc.data() as Map<String, dynamic>);
+
+    FirebaseFirestore.instance
+    .collection('users')
+    .doc(user?.uid)
+    .get()
+    .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        print('Document data: ${documentSnapshot.data()}');
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+
+
 
     return Scaffold(
       body: Center(
