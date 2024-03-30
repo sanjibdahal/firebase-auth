@@ -95,7 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         passwordController.text,
         nameController.text,
         phoneController.text,
-      );
+      ).whenComplete(() => Navigator.pop(context));
     } on FirebaseAuthException catch (e) {
       showErrorMsg(e.message!);
     } finally {
