@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_algo/src/common_widgets/elevated_button.dart';
 import 'package:daily_algo/src/common_widgets/text_field.dart';
 import 'package:daily_algo/src/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -29,7 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         return;
       }
       setState(() {
-        print("Path to the photo: ${selectedImage!.path}");
+        print("Path to the photo: ${selectedImage?.path}");
         selectedImage = File(pickedFile.path);
         image = selectedImage!.readAsBytesSync();
       });
@@ -38,41 +40,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-  // Future<void> uploadImage() async {
-  //   try {
-  //     User? user = FirebaseAuth.instance.currentUser;
+  Future<void> uploadImage() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
 
-  //     if (image != null) {
-  //       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-  //       firebase_storage.Reference ref = firebase_storage
-  //           .FirebaseStorage.instance
-  //           .ref()
-  //           .child('users')
-  //           .child(user!.uid)
-  //           .child('$fileName.jpg');
+      if (selectedImage != null) {
+        String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+        firebase_storage.Reference ref = firebase_storage
+            .FirebaseStorage.instance
+            .ref()
+            .child('users')
+            .child(user!.uid)
+            .child('$fileName.jpg');
 
-  //       // await ref.putFile(image!);
+        await ref.putFile(selectedImage!);
 
-  //       String downloadURL = await ref.getDownloadURL();
+        String downloadURL = await ref.getDownloadURL();
 
-  //       // Now you can save this downloadURL in Firestore along with other user data.
-  //       // For example:
-  //       FirebaseFirestore.instance.collection('users').doc(user.uid).update({
-  //         'photoUrl': downloadURL,
-  //       });
+        // Now you can save this downloadURL in Firestore along with other user data.
+        // For example:
+        FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+          'photoUrl': downloadURL,
+        });
 
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(content: Text('Image uploaded successfully')),
-  //       );
-  //     } else {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(content: Text('No image selected')),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     print('Error uploading image: $e');
-  //   }
-  // }
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Image uploaded successfully')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No image selected')),
+        );
+      }
+    } catch (e) {
+      print('Error uploading image: $e');
+    }
+  }
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -90,12 +92,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         isLoading = true;
       });
 
-      await AuthService().createUserWithEmailAndPassword(
-        emailController.text,
-        passwordController.text,
-        nameController.text,
-        phoneController.text,
-      ).whenComplete(() => Navigator.pop(context));
+      await AuthService()
+          .createUserWithEmailAndPassword(
+            emailController.text,
+            passwordController.text,
+            nameController.text,
+            phoneController.text,
+          )
+          .whenComplete(() => {
+                if (selectedImage != null) {uploadImage()},
+                Navigator.pop(context)
+              });
     } on FirebaseAuthException catch (e) {
       showErrorMsg(e.message!);
     } finally {

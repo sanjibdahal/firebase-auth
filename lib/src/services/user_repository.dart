@@ -30,6 +30,7 @@ class UserRepository {
               displayName: data['displayName'],
               email: data['email'],
               phoneNumber: data['phoneNumber'],
+              photoUrl: data['photoUrl'],
             )
           : null;
     } catch (e) {

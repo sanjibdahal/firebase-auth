@@ -52,18 +52,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text('Name: ${userData!.displayName}'),
                       Text('Email: ${userData!.email}'),
                       Text('Phone Number: ${userData!.phoneNumber}'),
-                      Text('Photo URL: ${userData!.id}'),
+                      // Text('Photo URL: ${userData!.photoUrl}'),
                     ],
                   ),
-                  // ClipOval(
-                  //   child: userData.photoURL == null
-                  //       ? const Icon(
-                  //           Icons.person,
-                  //           size: 40,
-                  //           color: Colors.black,
-                  //         )
-                  //       : Image.network("${userData.photoURL}"),
-                  // ),
+                  ClipOval(
+                    child: userData?.photoUrl == null
+                        ? const Icon(
+                            Icons.person,
+                            size: 40,
+                            color: Colors.black,
+                          )
+                        : Image.network(
+                            "${userData?.photoUrl}",
+                            fit: BoxFit.cover,
+                            width: 100,
+                            height: 100,
+                          ),
+                  ),
                   Text(currentUser.emailVerified
                       ? "Email verified"
                       : "Email is not verified"),
