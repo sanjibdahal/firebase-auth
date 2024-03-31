@@ -40,7 +40,24 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Center(
         child: userData == null
-            ? const Text("Loading...")
+            ? Column(
+                children: [
+                  const Text("Loading..."),
+                  Text(currentUser.email ?? ''),
+                  Text(currentUser.displayName ?? ''),
+                  Text(currentUser.phoneNumber ?? ''),
+                  Text(currentUser.photoURL ?? ''),
+                  SizedBox(
+                    width: 300,
+                    child: SElevatedButton(
+                      onPressed: () {
+                        AuthService().logout();
+                      },
+                      child: const Text("Logout"),
+                    ),
+                  ),
+                ],
+              )
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

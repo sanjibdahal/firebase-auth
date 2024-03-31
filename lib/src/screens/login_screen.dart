@@ -233,7 +233,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: ElevatedButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                AuthService().signInWithGitHub();
+                              },
                               style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 50),
                                 backgroundColor: Colors.black54,

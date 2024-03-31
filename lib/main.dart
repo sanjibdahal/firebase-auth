@@ -21,7 +21,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.dark,
       title: "Daily Algo",
       home: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),

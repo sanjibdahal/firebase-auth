@@ -19,7 +19,8 @@ class AuthService {
         .createUserWithEmailAndPassword(
       email: email,
       password: password,
-    ).whenComplete(() {
+    )
+        .whenComplete(() {
       final user = UserModel(
         id: FirebaseAuth.instance.currentUser!.uid,
         displayName: displayName,
@@ -36,6 +37,16 @@ class AuthService {
       await FirebaseAuth.instance.signOut();
     } catch (e) {
       throw "Unable to log out";
+    }
+  }
+
+  Future<UserCredential> signInWithGitHub() async {
+    GithubAuthProvider githubProvider = GithubAuthProvider();
+
+    if (kIsWeb) {
+      return await FirebaseAuth.instance.signInWithPopup(githubProvider);
+    } else {
+      return await FirebaseAuth.instance.signInWithProvider(githubProvider);
     }
   }
 
