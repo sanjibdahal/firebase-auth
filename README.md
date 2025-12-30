@@ -1,4 +1,3 @@
-# DailyDoseofAlgo
+# Firebase auth
 
-DailyDoseofAlgo is a web portal that will gamify the concept of learning algorithm and datastructure
-
+This is the repository of a flutter app showing the usage of Firebase with authentication, uploading images in the Firebase storage and editing the personal information.
